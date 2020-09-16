@@ -21,12 +21,12 @@ image = "ossystems/rust-cross:{{TAG}}"
 
 Refer to the table below for the `TARGET` and `TAG` available combinations:
 
-| Target                           | Image Tag                                               |  libc  |   GCC   | C++ | QEMU  | `test` |
-|----------------------------------|---------------------------------------------------------|-------:|--------:|:---:|------:|:------:|
-| `i686-unknown-linux-gnu`         | `i686-linux-compat-latest`                              | 2.11   | 4.4.5   | ✓   | N/A   |   ✓    |
-| `x86_64-unknown-linux-gnu`       | `x86_64-linux-compat-latest`                            | 2.11   | 4.4.5   | ✓   | N/A   |   ✓    |
-| `aarch64-unknown-linux-gnu`      | `aarch64-unknown-linux-gnu-0.2.1-libarchive-latest`     | 2.23   | 5.3.1   | ✓   | 4.2.0 |   ✓    |
-| `armv7-unknown-linux-gnueabihf`  | `armv7-unknown-linux-gnueabihf-0.2.1-libarchive-latest` | 2.23   | 5.3.1   | ✓   | 4.2.0 |   ✓    |
+| Target                           | Image Tag                                         |  libc  |   GCC   | C++ | QEMU  | `test` |
+|----------------------------------|---------------------------------------------------|-------:|--------:|:---:|------:|:------:|
+| `i686-unknown-linux-gnu`         | `i686-linux-compat-latest`                        | 2.11   | 4.4.5   | ✓   | N/A   |   ✓    |
+| `x86_64-unknown-linux-gnu`       | `x86_64-linux-compat-latest`                      | 2.11   | 4.4.5   | ✓   | N/A   |   ✓    |
+| `aarch64-unknown-linux-gnu`      | `aarch64-unknown-linux-gnu-libarchive-latest`     | 2.23   | 5.3.1   | ✓   | 4.2.0 |   ✓    |
+| `armv7-unknown-linux-gnueabihf`  | `armv7-unknown-linux-gnueabihf-libarchive-latest` | 2.23   | 5.3.1   | ✓   | 4.2.0 |   ✓    |
 
 ## License
 
