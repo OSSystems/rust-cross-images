@@ -18,6 +18,17 @@ main() {
     local -a deps
     local kernel=
 
+    # The Ubuntu 12.04 does not support newer package compression formats so we
+    # need to keep using the old releases.
+    if [ "${FORCE_STRETCH:-no}" = "yes" ]; then
+        # arch in the rust target
+        local arch="${1}" \
+              kversion=4.9.0-11
+
+        local debsource="deb http://http.debian.net/debian/ stretch main"
+        debsource="${debsource}\ndeb http://security.debian.org/ stretch/updates main"
+    fi
+
     # select debian arch and kernel version
     case "${arch}" in
         aarch64)
