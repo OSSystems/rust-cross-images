@@ -15,7 +15,7 @@ fi
 
 apt-get update
 
-apt-get install --assume-yes --no-install-recommends \
+apt-get install --assume-yes --no-install-recommends --allow-unauthenticated \
   autoconf \
   automake \
   binutils \

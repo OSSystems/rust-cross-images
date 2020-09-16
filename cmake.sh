@@ -10,14 +10,16 @@ main() {
 
     local dependencies=(curl)
 
-    apt-get update
     local purge_list=()
-    for dep in "${dependencies[@]}"; do
-        if ! dpkg -L "${dep}"; then
-            apt-get install --assume-yes --no-install-recommends "${dep}"
-            purge_list+=( "${dep}" )
-        fi
-    done
+    if ! type curl 2> /dev/null; then
+        apt-get update
+        for dep in "${dependencies[@]}"; do
+            if ! dpkg -L "${dep}"; then
+                apt-get install --assume-yes --no-install-recommends "${dep}"
+                purge_list+=( "${dep}" )
+            fi
+        done
+    fi
 
     local td
     td="$(mktemp -d)"

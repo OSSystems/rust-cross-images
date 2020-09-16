@@ -111,7 +111,7 @@ main() {
     apt-get update
     for dep in "${dependencies[@]}"; do
         if ! dpkg -L "${dep}"; then
-            apt-get install --assume-yes --no-install-recommends "${dep}"
+            apt-get install --assume-yes --no-install-recommends --allow-unauthenticated "${dep}"
             purge_list+=( "${dep}" )
         fi
     done
@@ -120,11 +120,13 @@ main() {
     mv /etc/apt/sources.list /etc/apt/sources.list.bak
     echo -e "${debsource}" > /etc/apt/sources.list
 
-    # Old ubuntu does not support --add-architecture, so we directly change multiarch file
-    if [ -f /etc/dpkg/dpkg.cfg.d/multiarch ]; then
-        cp /etc/dpkg/dpkg.cfg.d/multiarch /etc/dpkg/dpkg.cfg.d/multiarch.bak
+    if ! grep -q '^6.0' /etc/debian_version; then
+       # Old ubuntu does not support --add-architecture, so we directly change multiarch file
+       if [ -f /etc/dpkg/dpkg.cfg.d/multiarch ]; then
+           cp /etc/dpkg/dpkg.cfg.d/multiarch /etc/dpkg/dpkg.cfg.d/multiarch.bak
+       fi
+       dpkg --add-architecture "${arch}" || echo "foreign-architecture ${arch}" > /etc/dpkg/dpkg.cfg.d/multiarch
     fi
-    dpkg --add-architecture "${arch}" || echo "foreign-architecture ${arch}" > /etc/dpkg/dpkg.cfg.d/multiarch
 
     # Add Debian keys.
     curl --retry 3 -sSfL 'https://ftp-master.debian.org/keys/archive-key-{7.0,8,9,10}.asc' -O
@@ -143,7 +145,7 @@ main() {
     chmod 777 /qemu "/qemu/${arch}"
 
     cd "/qemu/${arch}"
-    apt-get -d --no-install-recommends download \
+    apt-get -d --no-install-recommends --allow-unauthenticated install -y \
         ${deps[@]+"${deps[@]}"} \
         "busybox:${arch}" \
         "${dropbear}:${arch}" \
@@ -158,7 +160,7 @@ main() {
     # Install packages
     root="root-${arch}"
     mkdir -p "${root}"/{bin,etc/dropbear,root,sys,dev,proc,sbin,tmp,usr/{bin,sbin},var/log}
-    for deb in "${arch}"/*deb; do
+    for deb in "/var/cache/apt/archives"/*deb; do
         dpkg -x "${deb}" "${root}"/
     done
 

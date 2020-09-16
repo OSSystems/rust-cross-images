@@ -12,16 +12,19 @@ main() {
         autoconf
         automake
         bzip2
-        curl
         make
         zlib1g-dev
     )
+
+    if ! type curl 2> /dev/null; then
+        dependencies+=( "curl" )
+    fi
 
     apt-get update
     local purge_list=()
     for dep in "${dependencies[@]}"; do
         if ! dpkg -L "${dep}"; then
-            apt-get install --assume-yes --no-install-recommends "${dep}"
+            apt-get install --assume-yes --no-install-recommends --allow-unauthenticated "${dep}"
             purge_list+=( "${dep}" )
         fi
     done

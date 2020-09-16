@@ -1,0 +1,41 @@
+# This is intended to be widely compatible with old Linux distributions.
+# Refer to https://github.com/rust-lang/rust/tree/master/src/ci/docker/host-x86_64/dist-x86_64-linux
+
+# We use Debian 6 (glibc 2.11, kernel 2.6.32) as a common base for other
+# distros that still need Rust support: RHEL 6 (glibc 2.12, kernel 2.6.32) and
+# SLES 11 SP4 (glibc 2.11, kernel 3.0).
+FROM debian:6
+
+# Debian 6 is EOL and no longer available from the usual mirrors,
+# so we'll need to switch to http://archive.debian.org/
+RUN sed -i '/updates/d' /etc/apt/sources.list && \
+    sed -i 's/httpredir/archive/' /etc/apt/sources.list
+
+COPY common.sh /
+RUN WITHOUT_PORTS=yes /common.sh
+
+COPY openssl.sh /
+RUN /openssl.sh
+
+COPY curl.sh /
+RUN /curl.sh
+
+COPY cmake.sh /
+RUN /cmake.sh
+
+COPY xargo.sh /
+RUN /xargo.sh
+
+COPY dropbear.sh /
+RUN /dropbear.sh
+
+RUN apt-get install --assume-yes --no-install-recommends --allow-unauthenticated \
+    g++-multilib
+
+# FIXME: The Debian 6 does not provide multiarch support so we're not creating
+# the QEMU environment to run the tests. This is a known issue and we're looking
+# for ideas how to fix it.
+
+COPY linux-runner /
+
+ENV CARGO_TARGET_I686_UNKNOWN_LINUX_GNU_RUNNER="/linux-runner i686"

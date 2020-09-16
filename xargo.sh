@@ -8,8 +8,11 @@ set -euo pipefail
 main() {
     local dependencies=(
         ca-certificates
-        curl
     )
+
+    if ! type curl 2> /dev/null; then
+        dependencies+=( "curl" )
+    fi
 
     apt-get update
     local purge_list=()
