@@ -4,3 +4,5 @@ RUN dpkg --add-architecture arm64 && \
     apt-get update && \
     apt-get install --assume-yes --no-install-recommends \
     libarchive-dev:arm64
+
+ENV PKG_CONFIG_aarch64_unknown_linux_gnu=aarch64-linux-gnu-pkg-config
