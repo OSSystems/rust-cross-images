@@ -19,7 +19,7 @@ run() {
   docker build ${cache_from_args[@]+"${cache_from_args[@]}"} --pull -t "${image_name}" -f "${dockerfile}" .
 
   if ! [[ "${version}" =~ alpha ]] && ! [[ "${version}" =~ dev ]]; then
-    local versioned_image_name="${image_name}-${version}"
+    local versioned_image_name="${image_name}-${version##v}"
     docker tag "${image_name}" "${versioned_image_name}"
   fi
 }
