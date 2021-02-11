@@ -32,10 +32,6 @@ RUN /dropbear.sh
 RUN apt-get install --assume-yes --no-install-recommends --allow-unauthenticated \
     g++-multilib
 
-# FIXME: The Debian 6 does not provide multiarch support so we're not creating
-# the QEMU environment to run the tests. This is a known issue and we're looking
-# for ideas how to fix it.
-
 COPY linux-runner /
 
 ENV CARGO_TARGET_I686_UNKNOWN_LINUX_GNU_RUNNER="/linux-runner i686"
