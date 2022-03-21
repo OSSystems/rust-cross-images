@@ -3,7 +3,16 @@ FROM rustembedded/cross:armv7-unknown-linux-gnueabihf-0.2.1
 RUN dpkg --add-architecture armhf && \
     apt-get update && \
     apt-get install -t xenial --assume-yes --no-install-recommends \
-    libarchive-dev:armhf
+    libarchive-dev:armhf \
+    libicu-dev:armhf \
+    nettle-dev:armhf \
+    libacl1-dev:armhf \
+    liblzma-dev:armhf \
+    libzstd-dev:armhf \
+    liblz4-dev:armhf \
+    libbz2-dev:armhf \
+    zlib1g-dev:armhf \
+    libxml2-dev:armhf
 
 ENV PKG_CONFIG_ALLOW_CROSS 1
 ENV PKG_CONFIG_PATH /usr/lib/arm-linux-gnueabihf/pkgconfig/
