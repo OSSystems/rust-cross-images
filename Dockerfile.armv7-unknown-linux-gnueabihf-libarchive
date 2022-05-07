@@ -14,8 +14,17 @@ RUN dpkg --add-architecture armhf && \
     zlib1g-dev:armhf \
     libxml2-dev:armhf
 
+COPY openssl-1.1.sh /
+RUN /openssl-1.1.sh linux-armv4 arm-linux-gnueabihf-
+
 ENV PKG_CONFIG_ALLOW_CROSS 1
 ENV PKG_CONFIG_PATH /usr/lib/arm-linux-gnueabihf/pkgconfig/
+
+# OpenSSL linking
+ENV OPENSSL_STATIC=1 \
+    OPENSSL_DIR=/openssl \
+    OPENSSL_INCLUDE_DIR=/openssl/include \
+    OPENSSL_LIB_DIR=/openssl/lib
 
 # Set the locale
 ENV LANG C.UTF-8
