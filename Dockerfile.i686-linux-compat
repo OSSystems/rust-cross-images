@@ -11,8 +11,8 @@ FROM debian:6
 RUN sed -i '/updates/d' /etc/apt/sources.list && \
     sed -i 's/httpredir/archive/' /etc/apt/sources.list
 
-COPY common.sh /
-RUN WITHOUT_PORTS=yes /common.sh
+COPY common.sh lib.sh /
+RUN /common.sh
 
 COPY openssl.sh /
 RUN /openssl.sh
